@@ -25,5 +25,6 @@ urlpatterns = [
     # path('top/', views.top)
     path('top/', views.top),
     path('api/', include(router.urls)),
-    path('scraping/', TemplateView.as_view(template_name='index.html')),
+    path('scraping/', include('django.contrib.auth.urls')),
+    path('scraping/', TemplateView.as_view(template_name='index.html'),name="index"),
 ]

@@ -13,7 +13,9 @@ RUN apt-get update \
 && pip install djangorestframework \
 && apt-get install -y python-dev default-libmysqlclient-dev \
 && apt-get install -y python3-dev \
-&& pip install mysqlclient
+&& pip install mysqlclient \
+# scrapy
+&& pip install scrapy
 
 
 

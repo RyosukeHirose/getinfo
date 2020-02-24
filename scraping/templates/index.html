@@ -75,74 +75,27 @@
             <v-layout wrap>
               <div class="container">
                 <div class="row">
-                  <h1>投稿一覧
-                    <button
-                      type="button"
-                      class="btn btn-primary"
-                      data-toggle="modal"
-                      data-target="#addScrapingModal"
-                    >
-                      新規追加
-                    </button>
+                  <h1>記事一覧
+    
                   </h1>
                   <table class="table">
                     <thead>
                       <tr>
-                        <th scope="col">🦔</th>
-                        <th scope="col">ヘッダー</th>
-                        <th scope="col">アクション</th>
+                        <th scope="col">記事</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="scraping in scrapings">
-                        <th scope="row">${scraping.scraping_id}</th>
-                        <td>${scraping.scraping_heading}</td>
-                        <td>
-                          <button class="btn btn-info" v-on:click="getScraping(scraping.scraping_id)">編集</button>
-                          <button class="btn btn-danger" v-on:click="deleteScraping(scraping.scraping_id)">削除</button>
-                        </td>
+                      <tr v-for="article in articles">
+                        <td><a :href="article.article">${article.title}</a></td>
+                        <!-- <td>
+                          <button class="btn btn-info" v-on:click="getScraping(scraping.scraping_id)">編集</button> -->
+                          <!-- <button class="btn btn-danger" v-on:click="deleteScraping(scraping.scraping_id)">削除</button>
+                        </td> -->
                       </tr>
                     </tbody>
                   </table>
                   <!-- Add scraping Modal -->
-                  <div class="modal fade" id="addScrapingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
-                    aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLongTitle">
-                            新規追加
-                          </h5>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                          </button>
-                        </div>
-                        <form v-on:submit.prevent="addScraping()">
-                          <div class="modal-body">
-                            <div class="form-group">
-                              <label for="scraping_heading">タイトル</label>
-                              <input type="text" class="form-control" id="scraping_heading" placeholder="タイトルを入力してください"
-                                v-model="newScraping.scraping_heading" required="required" />
-                            </div>
-                            <div class="form-group">
-                              <label for="scraping_body">本文</label>
-                              <textarea class="form-control" id="scraping_body" placeholder="本文を入力してください" v-model="newScraping.scraping_body"
-                                required="required" rows="3"></textarea>
-                            </div>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary m-progress" data-dismiss="modal">
-                              閉じる
-                            </button>
-                            <button type="submit" class="btn btn-primary">
-                              保存
-                            </button>
-                          </div>
-                        </form>
-                      </div>
-                    </div>
-                    <div class="loading" v-if="loading===true">Loading…</div>
-                  </div>
+                
         <!-- End of add scraping modal -->
                 </div>
               </div>
@@ -152,6 +105,7 @@
       </v-app>
       <div class="loading" v-if="loading===true">Loading…</div>
     </div>
+    <!-- vue.js -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" crossorigin=”anonymous”></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" crossorigin=”anonymous”></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" crossorigin=”anonymous”></script>
@@ -164,32 +118,30 @@
 
     <script type="text/javascript">
 
-    // new Vue({
-    //   el: '#app',
-    //   vuetify: new Vuetify(),
-    // })
+
 
     new Vue({
       el: '#app',
       vuetify: new Vuetify(),
       delimiters: ['${','}'],
       data: {
-      scrapings: [],
+      articles: [],
       loading: false,
       currentscraping: {},
       message: null,
       newScraping: { 'scraping_heading': null, 'scraping_body': null },
+      newUsers: { 'username': null, 'id': null }
     },
     mounted: function() {
-        console.log("aaaaaaaaaaa")
-        this.getScrapings();
+        this.getArticles();
     },
     methods: {
-        getScrapings: function() {
+        getArticles: function() {
             this.loading = true;
-            this.$http.get('/api/scraping/')
+            this.$http.get('/api/articles/')
                 .then((response) => {
-                  this.scrapings = response.data;
+                  this.articles = response.data;
+                  console.log(this.users)
                   this.loading = false;
                 })
                 .catch((err) => {
